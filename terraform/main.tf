@@ -45,7 +45,8 @@ resource "google_service_account" "scheduler_invoker" {
 resource "google_cloud_scheduler_job" "daily_function_invocation" {
   name        = "daily-function-invocation"
   description = "Invoke Cloud Function daily"
-  schedule    = "30 11 * * *"
+  schedule    = "34 11 * * *"
+  time_zone = "Europe/Berlin"
 
   http_target {
     http_method = "GET"

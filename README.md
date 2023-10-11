@@ -22,7 +22,6 @@ gcloud services enable cloudbuild.googleapis.com --project=trellonotify-401705
 gcloud services enable cloudscheduler.googleapis.com --project=trellonotify-401705
 gcloud services enable cloudresourcemanager.googleapis.com --project=trellonotify-401705
 gcloud services enable iam.googleapis.com --project=trellonotify-401705
-gcloud projects add-iam-policy-binding trellonotify-401705 --member=serviceAccount:terraform@trellonotify-401705.iam.gserviceaccount.com  --role=roles/cloudfunctions.admin
 '''
 
 ## Terraform setup with GCP
@@ -32,7 +31,9 @@ gcloud projects add-iam-policy-binding trellonotify-401705 --member=serviceAccou
 2.1 For simplicity, we add project/editor role to this account. Later we can narrow it.
 2.2 Create new key in JSON format
 3. Set an environment variable named GOOGLE_APPLICATION_CREDENTIALS pointing to the path of the downloaded JSON key.
-4. Initialize your Terraform project using terraform init.
+4. remember the email from service account: SERVICE_ACCOUNT_EMAIL
+5. run `gcloud projects add-iam-policy-binding trellonotify-401705 --member=serviceAccount:<SERVICE_ACCOUNT_EMAIL>  --role=roles/cloudfunctions.admin`
+6. Initialize your Terraform project using terraform init.
 
 
 # Application setup
