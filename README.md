@@ -13,7 +13,7 @@ This tool was originally developed for local/NAS based usage. Now it will be mig
 ## GCP Project setup
 '''
 gcloud auth login
-gcloud config set project trellonotify-401705
+gcloud config set project xxxx
 gcloud services enable cloudfunctions.googleapis.com
 gcloud services enable cloudscheduler.googleapis.com
 gcloud services enable storage-api.googleapis.com
@@ -28,6 +28,27 @@ gcloud services enable gmail.googleapis.com
 2.2 Create new key in JSON format
 3. Set an environment variable named GOOGLE_APPLICATION_CREDENTIALS pointing to the path of the downloaded JSON key.
 4. Initialize your Terraform project using terraform init.
+
+
+# Application setup
+## main.tf modification
+- change google project id: xxxxx
+- change source bucket name: xxxxx
+
+## deploy.sh modification
+- change source BUCKET_NAME: xxxxx
+
+
+# Application infrastructure setup
+```
+terraform -chdir=terraform init
+terraform -chdir=terraform apply
+```
+# Application deployment
+```
+.\scripts\deploy.ps1
+```
+
 
 # TODOs
 ## Narrow terraform service account roles
