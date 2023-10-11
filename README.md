@@ -18,6 +18,7 @@ gcloud services enable cloudfunctions.googleapis.com
 gcloud services enable cloudscheduler.googleapis.com
 gcloud services enable storage-api.googleapis.com
 gcloud services enable gmail.googleapis.com
+gcloud services enable cloudbuild.googleapis.com --project=trellonotify-401705
 '''
 
 ## Terraform setup with GCP

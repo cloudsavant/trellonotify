@@ -1,6 +1,6 @@
 import logging
 
-def hello_gcp(request):
+def test_function(request):
     """ Cloud Function to be triggered by HTTP.
     Args:
         request (flask.Request): The request object.
@@ -15,4 +15,4 @@ def hello_gcp(request):
 
 if __name__ == "__main__":
     # This block is for local testing and will not be executed in GCP environment
-    hello_gcp(None)
+    test_function(None)
