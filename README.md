@@ -19,6 +19,10 @@ gcloud services enable cloudscheduler.googleapis.com
 gcloud services enable storage-api.googleapis.com
 gcloud services enable gmail.googleapis.com
 gcloud services enable cloudbuild.googleapis.com --project=trellonotify-401705
+gcloud services enable cloudscheduler.googleapis.com --project=trellonotify-401705
+gcloud services enable cloudresourcemanager.googleapis.com --project=trellonotify-401705
+gcloud services enable iam.googleapis.com --project=trellonotify-401705
+gcloud projects add-iam-policy-binding trellonotify-401705 --member=serviceAccount:terraform@trellonotify-401705.iam.gserviceaccount.com  --role=roles/cloudfunctions.admin
 '''
 
 ## Terraform setup with GCP

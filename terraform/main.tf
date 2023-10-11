@@ -25,3 +25,43 @@ resource "google_cloudfunctions_function" "test_function" {
   runtime               = "python310"
   entry_point           = "test_function"
 }
+
+# Enable the Cloud Scheduler and IAM APIs
+resource "google_project_service" "scheduler_api" {
+  service = "cloudscheduler.googleapis.com"
+}
+
+resource "google_project_service" "iam_api" {
+  service = "iam.googleapis.com"
+}
+
+# Create a Service Account for Cloud Scheduler
+resource "google_service_account" "scheduler_invoker" {
+  account_id   = "scheduler-invoker"
+  display_name = "Scheduler Cloud Function Invoker"
+}
+
+# Create a Cloud Scheduler Job
+resource "google_cloud_scheduler_job" "daily_function_invocation" {
+  name        = "daily-function-invocation"
+  description = "Invoke Cloud Function daily"
+  schedule    = "30 11 * * *"
+
+  http_target {
+    http_method = "GET"
+    uri         = google_cloudfunctions_function.test_function.https_trigger_url
+    oidc_token {
+      service_account_email = google_service_account.scheduler_invoker.email
+    }
+  }
+}
+
+# Give the Service Account Permissions to Invoke Cloud Function
+resource "google_cloudfunctions_function_iam_member" "invoker" {
+  project  = google_cloudfunctions_function.test_function.project
+  region   = google_cloudfunctions_function.test_function.region
+  cloud_function = google_cloudfunctions_function.test_function.name
+
+  role    = "roles/cloudfunctions.invoker"
+  member  = "serviceAccount:${google_service_account.scheduler_invoker.email}"
+}
