@@ -66,3 +66,27 @@ resource "google_cloudfunctions_function_iam_member" "invoker" {
   role    = "roles/cloudfunctions.invoker"
   member  = "serviceAccount:${google_service_account.scheduler_invoker.email}"
 }
+
+# new secret TRELLO_LIST_ID
+resource "google_secret_manager_secret" "trello_list_id_secret" {
+  secret_id = "TRELLO_LIST_ID"
+  replication {
+    auto { }
+  }
+}
+
+# new secret TRELLO_KEY
+resource "google_secret_manager_secret" "trello_key_secret" {
+  secret_id = "TRELLO_KEY"
+  replication {
+    auto {}
+  }
+}
+
+# new secret TRELLO_TOKEN
+resource "google_secret_manager_secret" "trello_token_secret" {
+  secret_id = "TRELLO_TOKEN"
+  replication {
+    auto {}
+  }
+}
