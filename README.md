@@ -14,6 +14,10 @@ This tool was originally developed for local/NAS based usage. Now it will be mig
 '''
 gcloud auth login
 gcloud config set project trellonotify-401705
+gcloud services enable cloudfunctions.googleapis.com
+gcloud services enable cloudscheduler.googleapis.com
+gcloud services enable storage-api.googleapis.com
+gcloud services enable gmail.googleapis.com
 '''
 
 ## Terraform setup with GCP
