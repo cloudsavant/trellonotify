@@ -99,3 +99,15 @@ resource "google_secret_manager_secret" "trello_token_secret" {
     auto {}
   }
 }
+
+resource "google_storage_bucket" "data_files_bucket" {
+  name     = "trellonotify-files-bucket"  # Choose a unique name for your bucket
+  location = "us-central1"           # Choose an appropriate region
+
+  # Optional: Enable versioning if you want to keep multiple versions of your data files
+  versioning {
+    enabled = true
+  }
+
+  # Add other configurations as needed
+}

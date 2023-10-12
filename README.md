@@ -69,6 +69,10 @@ echo "your_trello_token_value" | gcloud secrets versions add "TRELLO_TOKEN" --da
 '''
 virtualenv.exe trellonotify
 .\trellonotify\Scripts\activate
+
+pip install google-cloud-storage
+pip install google-cloud-secret-manager
+pip freeze > app/requirements.txt
 '''
 
 # Application infrastructure setup
@@ -81,6 +85,10 @@ terraform -chdir=terraform apply
 .\scripts\deploy.ps1
 ```
 
+# upload data file to cloud
+```
+gcloud storage cp ./test-data.txt gs://trellonotify-files-bucket/test-data.txt
+```
 
 # TODOs
 ## Narrow terraform service account roles
