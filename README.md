@@ -39,6 +39,10 @@ gcloud services enable secretmanager.googleapis.com --project=trellonotify-40170
 
 gcloud projects add-iam-policy-binding trellonotify-401705 --member=serviceAccount:<SERVICE_ACCOUNT_EMAIL> --role=roles/secretmanager.secretAccessor
 
+gcloud projects add-iam-policy-binding trellonotify-401705 --role roles/secretmanager.secretAccessor --member serviceAccount:trellonotify-401705@appspot.gserviceaccount.com
+
+
+
 '''
 6. Initialize your Terraform project using terraform init.
 7. add secrets to project in power shell
@@ -61,6 +65,11 @@ echo "your_trello_token_value" | gcloud secrets versions add "TRELLO_TOKEN" --da
 ## deploy.sh modification
 - change source BUCKET_NAME: xxxxx
 
+## python env
+'''
+virtualenv.exe trellonotify
+.\trellonotify\Scripts\activate
+'''
 
 # Application infrastructure setup
 ```

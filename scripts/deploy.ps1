@@ -13,7 +13,7 @@ if (-not (Test-Path $BUILD_DIR)) {
 # Zip the source code
 Write-Host "Zipping source code..."
 Set-Location $SOURCE_DIR
-Compress-Archive -Path * -DestinationPath "$CURRENT_DIR\$BUILD_DIR\$ZIP_NAME"
+Compress-Archive -Force -Path * -DestinationPath "$CURRENT_DIR\$BUILD_DIR\$ZIP_NAME"
 
 # Return to the original directory
 Set-Location $CURRENT_DIR

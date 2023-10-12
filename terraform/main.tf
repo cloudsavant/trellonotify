@@ -10,10 +10,15 @@ resource "google_storage_bucket" "function_source" {
 }
 
 resource "google_storage_bucket_object" "function_code" {
-  name   = "test-function.zip"
+  name   = "code.zip"
   bucket = google_storage_bucket.function_source.name
   source = "../build/code.zip" # assuming you've zipped your function and placed it in the app directory
 }
+
+locals {
+  source_code_hash = substr(filesha256("../build/code.zip"), 0, 63)
+}
+
 
 resource "google_cloudfunctions_function" "test_function" {
   name                  = "test-function"
@@ -24,6 +29,10 @@ resource "google_cloudfunctions_function" "test_function" {
   trigger_http          = true
   runtime               = "python310"
   entry_point           = "test_function"
+
+  labels = {
+    code_hash = local.source_code_hash
+  } 
 }
 
 # Enable the Cloud Scheduler and IAM APIs
