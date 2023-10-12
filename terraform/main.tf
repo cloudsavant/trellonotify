@@ -10,9 +10,9 @@ resource "google_storage_bucket" "function_source" {
 }
 
 resource "google_storage_bucket_object" "function_code" {
-  name   = "code.zip"
+  name   = "${local.source_code_hash}.zip"
   bucket = google_storage_bucket.function_source.name
-  source = "../build/code.zip" # assuming you've zipped your function and placed it in the app directory
+  source = "../build/code.zip" # assuming you've zipped your function and placed it in the build directory
 }
 
 locals {
