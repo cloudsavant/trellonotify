@@ -46,15 +46,16 @@ gcloud projects add-iam-policy-binding trellonotify-401705 --role roles/secretma
 '''
 6. Initialize your Terraform project using terraform init.
 7. add secrets to project in power shell
+!!!! NOT WORKING, always adding /r/n at the end of the value
 '''
 # Add new version for TRELLO_LIST_ID
-echo "your_trello_list_id_value" | gcloud secrets versions add "TRELLO_LIST_ID" --data-file=-
+Write-Output "your_trello_list_id_value" -NoNewline | gcloud secrets versions add "TRELLO_LIST_ID" --data-file=-
 
 # Add new version for TRELLO_KEY
-echo "your_trello_key_value" | gcloud secrets versions add "TRELLO_KEY" --data-file=-
+Write-Output "your_trello_key_value" -NoNewline | gcloud secrets versions add "TRELLO_KEY" --data-file=-
 
 # Add new version for TRELLO_TOKEN
-echo "your_trello_token_value" | gcloud secrets versions add "TRELLO_TOKEN" --data-file=-
+Write-Output  -NoNewline "your_trello_token_value" | gcloud secrets versions add "TRELLO_TOKEN" --data-file=-
 '''
 
 # Application setup
@@ -69,6 +70,7 @@ echo "your_trello_token_value" | gcloud secrets versions add "TRELLO_TOKEN" --da
 '''
 virtualenv.exe trellonotify
 .\trellonotify\Scripts\activate
+.\trellonotify\Scripts\Activate.ps1
 
 pip install google-cloud-storage
 pip install google-cloud-secret-manager
