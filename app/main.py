@@ -11,6 +11,8 @@ from io import BytesIO
 
 pd.options.mode.chained_assignment = None
 
+CSV_DATA_FILE = "db.csv"
+
 def get_secret(secret_id, version_id="latest"):
     client = secretmanager.SecretManagerServiceClient()
     # Build the resource name of the secret version.
@@ -131,7 +133,7 @@ def generate_output_rows4group(df, group):
 
 def test_function(request):
     # loading db
-    df_original = read_gcs_csv_to_dataframe("trellonotify-files-bucket", "test-data.txt")
+    df_original = read_gcs_csv_to_dataframe("trellonotify-files-bucket", CSV_DATA_FILE)
 
     #converting db, using only active rows, generating days left column
     df = df_original[df_original['active'] == True]
@@ -147,15 +149,14 @@ def test_function(request):
 
     todolist = todolist.fillna('')
     tickets_created =[]
-    for index, todo in todolist.iterrows():
-        #print(todo)
+    for _ , todo in todolist.iterrows():
         name = '#%s - %s' % (todo['id'], todo['contract'])
         description = '%s\nenddate: %s' % (
             todo['notice_period-description'], todo['enddate'])
         duedate = datetime.datetime.strptime(todo['noticabletill'], "%Y-%m-%d")
-        print(todo['trello-ticket-id'])
+        #print(todo['trello-ticket-id'])
         if todo['trello-ticket-id']:
-            print('Skipping todo: %s' % todo['id'])
+            logging.info('Skipping todo: %s' % todo['id'])
             continue 
         ticket_id = create_trello_card(
             name, description, duedate, TRELLO_LIST_ID)
@@ -175,11 +176,11 @@ def test_function(request):
                         'active'] = False
 
     # saving all data back to db file
-    write_dataframe_to_gcs(df_original, "trellonotify-files-bucket", "test-data.txt")
+    write_dataframe_to_gcs(df_original, "trellonotify-files-bucket", CSV_DATA_FILE)
 
     daygroups = {-1: 'overdue', 1: '1 day time', 10: '10 day time'}#, 30: '30 day time',60: '60 day time', 90: '90 day time', 91: '90+ day time'}
     output = 'tickets created:' + ','.join(tickets_created) + '\n'
-    print(f"{output}")
+    logging.info(f"{output}")
 
     for daygroup in daygroups.keys(): 
         print(f"{daygroups[daygroup]}\n{generate_output_rows4group(df, daygroup)}")
@@ -188,5 +189,4 @@ def test_function(request):
 
 if __name__ == "__main__":
     # This block is for local testing and will not be executed in GCP environment
-    print('main called')
     test_function(None)

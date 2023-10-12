@@ -89,7 +89,7 @@ terraform -chdir=terraform apply
 
 # upload data file to cloud
 ```
-gcloud storage cp ./test-data.txt gs://trellonotify-files-bucket/test-data.txt
+gcloud storage cp Z:\contract_monitor_scheduled_task\db.csv gs://trellonotify-files-bucket/db.csv 
 ```
 
 # TODOs
