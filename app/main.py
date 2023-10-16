@@ -130,6 +130,33 @@ def generate_output_rows4group(df, group):
     return '' if output_rows.empty else '\n'.join(output_rows)
 
 
+def send_message_to_slack(message):
+    # Replace with your Slack API token and channel ID
+    slack_token = get_secret('SLACK_API_TOKEN')
+    channel_id = get_secret('SLACK_CHANNEL_ID')
+
+    url = "https://slack.com/api/chat.postMessage"
+
+    # Create the payload for the request
+    payload = {
+        "channel": channel_id,
+        "text": message,
+    }
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {slack_token}",
+    }
+
+    # Send the message to Slack
+    response = requests.post(url, data=json.dumps(payload), headers=headers)
+
+    if response.status_code == 200:
+        return "Message sent to Slack successfully"
+    else:
+        return "Failed to send message to Slack"
+
+
 
 def test_function(request):
     # loading db
@@ -156,7 +183,9 @@ def test_function(request):
         duedate = datetime.datetime.strptime(todo['noticabletill'], "%Y-%m-%d")
         #print(todo['trello-ticket-id'])
         if todo['trello-ticket-id']:
-            logging.info('Skipping todo: %s' % todo['id'])
+            msg = 'Skipping todo: %s' % todo['id']
+            logging.info(msg)
+            send_message_to_slack(msg)
             continue 
         ticket_id = create_trello_card(
             name, description, duedate, TRELLO_LIST_ID)
@@ -181,11 +210,20 @@ def test_function(request):
     daygroups = {-1: 'overdue', 1: '1 day time', 10: '10 day time'}#, 30: '30 day time',60: '60 day time', 90: '90 day time', 91: '90+ day time'}
     output = 'tickets created:' + ','.join(tickets_created) + '\n'
     logging.info(f"{output}")
+    send_message_to_slack(output)
 
     for daygroup in daygroups.keys(): 
-        print(f"{daygroups[daygroup]}\n{generate_output_rows4group(df, daygroup)}")
+        msg = f"{daygroups[daygroup]}\n{generate_output_rows4group(df, daygroup)}"
+        print(msg)
+        send_message_to_slack(msg)
 
-    return 'All done, exiting"!', 200
+    # Send the message to Slack using the imported function
+    message = 'All done, exiting"!'
+    result = send_message_to_slack(message)
+    
+    logging.info(result)
+
+    return message, 200
 
 if __name__ == "__main__":
     # This block is for local testing and will not be executed in GCP environment

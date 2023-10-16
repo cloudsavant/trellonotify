@@ -40,23 +40,31 @@ gcloud services enable secretmanager.googleapis.com --project=trellonotify-40170
 gcloud projects add-iam-policy-binding trellonotify-401705 --member=serviceAccount:<SERVICE_ACCOUNT_EMAIL> --role=roles/secretmanager.secretAccessor
 
 gcloud projects add-iam-policy-binding trellonotify-401705 --role roles/secretmanager.secretAccessor --member serviceAccount:trellonotify-401705@appspot.gserviceaccount.com
-
-
-
 '''
 6. Initialize your Terraform project using terraform init.
-7. add secrets to project in power shell
-!!!! NOT WORKING, always adding /r/n at the end of the value
-'''
-# Add new version for TRELLO_LIST_ID
-Write-Output "your_trello_list_id_value" -NoNewline | gcloud secrets versions add "TRELLO_LIST_ID" --data-file=-
 
-# Add new version for TRELLO_KEY
-Write-Output "your_trello_key_value" -NoNewline | gcloud secrets versions add "TRELLO_KEY" --data-file=-
+7. add secrets to project manually
+- Add new version for TRELLO_LIST_ID
+- Add new version for TRELLO_KEY
+- Add new version for TRELLO_TOKEN
 
-# Add new version for TRELLO_TOKEN
-Write-Output  -NoNewline "your_trello_token_value" | gcloud secrets versions add "TRELLO_TOKEN" --data-file=-
-'''
+8. create Slack app
+To send a message to Slack from a Google Cloud Function using Python, you can use the requests library to make an HTTP POST request to Slack's API. Here are the steps to achieve this:
+
+- Create a Slack App:
+    Go to the Slack API website (https://api.slack.com/).
+    Create a new Slack App or use an existing one.
+- Configure OAuth & Permissions:
+    Part: OAuth Tokens for Your Workspace generate Bot User OAuth Token
+    Part Scopes: grant your app the chat:write or chat:write.customize, chat:write.public scope, depending on your use case.
+- Install the App:
+    Install the Slack App to your workspace. This will generate an OAuth token that you'll use to authenticate your cloud function.
+
+9. add secrets to project manually
+- Add new version for SLACK_API_TOKEN
+- Add new version for SLACK_CHANNEL_ID
+
+
 
 # Application setup
 ## main.tf modification

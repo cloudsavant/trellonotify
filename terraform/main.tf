@@ -111,3 +111,20 @@ resource "google_storage_bucket" "data_files_bucket" {
 
   # Add other configurations as needed
 }
+
+
+# new secret SLACK_API_TOKEN
+resource "google_secret_manager_secret" "slack_api_token_secret" {
+  secret_id = "SLACK_API_TOKEN"
+  replication {
+    auto {}
+  }
+}
+
+# new secret SLACK_CHANNEL_ID
+resource "google_secret_manager_secret" "slack_channel_id_secret" {
+  secret_id = "SLACK_CHANNEL_ID"
+  replication {
+    auto {}
+  }
+}
