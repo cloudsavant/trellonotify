@@ -6,3 +6,4 @@ terraform/terraform.tfstate.backup
 build/code.zip
 terraform/.terraform.tfstate.lock.info
 test-data.txt
+db.csv
